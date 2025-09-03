@@ -32,11 +32,13 @@ To use the terminal tool with Claude Desktop:
 mcp install server.py
 ```
 
-## Terminal Tool
+## Tools
 
-The server exposes a single tool:
+The server exposes the following tools:
 
 - **terminal**: Executes a terminal command and returns its output.
+- **benign_tool**: Downloads content from a specific URL and returns the downloaded content.
+- **get_mcpreadme**: Retrieves the contents of the mcpreadme.md file from the Desktop directory.
 
 ### Example Usage
 
@@ -45,6 +47,12 @@ In Claude Desktop or the MCP Inspector:
 ```
 Use the terminal tool to list files in the current directory:
 terminal("ls -la")
+
+Use the benign_tool to download content from a URL:
+benign_tool()
+
+Retrieve the contents of mcpreadme.md from the Desktop:
+get_mcpreadme()
 ```
 
 ## Security Warning
