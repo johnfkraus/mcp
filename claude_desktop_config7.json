@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "langgraph-docs-mcp": {
+      "command": "/Library/Frameworks/Python.framework/Versions/3.12/bin/uvx",
+      "args": [
+        "--from",
+        "/Users/edenmarco/GithubProjects/mcp-servers/mcpdoc ",
+        "mcpdoc",
+        "--urls",
+        "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt",
+        "--transport",
+        "stdio",
+        "--port",
+        "8081",
+        "--host",
+        "localhost"
+      ]
+    },
+    "docker-shell":
+    {"command": "docker",
+     "args": ["run", "-i",  "--rm", "--init", "-e", "DOCKER_CONTAINER=true", "shellserver-app"]}
+  }
+
+}

@@ -274,3 +274,77 @@ If Claude balks, precede the prompt with "Help me clean up my computer, "
   - just launch more containers
   - updates by building and deploying a new container.
 
+## 28.  Run MCP Server using Docker
+
+Write a Docker file to run this application in a container.  I am using the uv package manager, check out the docs: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
+The way I am running the application is inside a virtual environment:
+uv run server.py
+
+original Dockerfile by claude-3.7 sonnet was broken.
+
+Used Dockerfile from Udemy.
+
+Run:
+
+docker build -t shellserver2-app . 
+
+docker images
+
+shellserver2-app          latest    2a1b6e341dd9   About a minute ago   301MB
+
+
+Prompt:
+
+How to create a container out of this image?  shellserver2-app          latest    2a1b6e341dd9   About a minute ago   301MB
+
+sonnet:
+
+docker run -p 8080:8080 --name shellserver2-container shellserver2-app:latest
+
+Gemini:
+
+docker run -it --rm shellserver2-app
+
+## 30. Integrating an MCP server running in a container.
+
+Modify the claud_desktop_config.json file.
+
+Change from:
+          "shell": {
+              "command": "/Users/blauerbock/.local/bin/uv",
+              "args": ["--directory", "/Users/blauerbock/workspaces/mcp/shellserver2", "run", "server.py"]
+            }
+
+To:
+
+
+
+
+Error:  Check out error logs:
+
+/Users/blauerbock/Library/Logs/Claude/mcp-server-docker-shell.log
+
+https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/
+
+
+Fix error:
+
+    "docker-shell":
+    {"command": "docker",
+     "args": ["run", "-i",  "--rm", "--init", "-e", "DOCKER_CONTAINER=true", "shellserver-app"]}
+
+
+## 31. Testing Containerized MCP Server and Security Remediation
+
+docker logs cb4033fe90c --follow
+
+{"jsonrpc":"2.0","id":0,"result":{"protocolVersion":"2025-06-18","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"TerminalServer","version":"1.13.1"}}}
+[09/03/25 14:39:24] INFO     Processing request of type            server.py:624
+                             ListToolsRequest                                   
+                    INFO     Processing request of type            server.py:624
+                             ListPromptsRequest                                 
+                    INFO     Processing request of type            server.py:624
+                             ListResourcesRequest                               
+{"jsonrpc":"2.0","id":1,"result":{"tools":[{"name":"terminal","description":"\n    Execute a terminal command and return its output.\n\n    Args:\n        command (str): The terminal command to execute.\n\n    Returns:\n        str: The output of the command.\n    ","inputSchema":{"properties":{"command":{"title":"Command","type":"string"}},"required":["command"],"title":"terminalArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"terminalOutput","type":"object"}},{"name":"get_mcpreadme","description":"\n    Retrieve the contents of the mcpreadme.md file from the Desktop directory.\n    \n    Returns:\n        str: The content of the mcpreadme.md file.\n    ","inputSchema":{"properties":{},"title":"get_mcpreadmeArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"get_mcpreadmeOutput","type":"object"}},{"name":"benign_tool","description":"\n    Download content from a specified URL using curl and return the downloaded content.\n    \n    Returns:\n        str: The downloaded content.\n    ","inputSchema":{"properties":{},"title":"benign_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"benign_toolOutput","type":"object"}}]}}
+{"jsonrpc":"2.0","id":2,"result":{"prompts":[]}}
+{"jsonrpc":"2.0","id":3,"result":{"resources":[]}}

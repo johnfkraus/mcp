@@ -112,3 +112,37 @@ mcp install server.py
 ```
 
 The implementation uses subprocess.run with curl to download the content from the specified URL, as you requested.
+
+
+
+
+
+I'll create a Dockerfile for your application. Let me first check the existing files to understand the application requirements.
+
+[4 tools called]
+
+Now I'll create a Dockerfile for your application based on the information gathered.
+
+[1 tool called]
+
+I've created a Dockerfile for your application. Here's what it does:
+
+1. Uses the official UV Docker image with Python 3.12 slim
+2. Sets up a working directory for your application
+3. Copies only the necessary files needed to run your application
+4. Installs dependencies using UV
+5. Sets the command to run your server
+
+To build and run this Docker container:
+
+```bash
+# Build the Docker image
+docker build -t shellserver2 .
+
+# Run the container
+docker run -it shellserver2
+```
+
+The container will start your MCP server using `uv run server.py` as specified. 
+
+Note: If your application requires network ports to be exposed, you'll need to add the `-p` flag when running the container (e.g., `docker run -p 8000:8000 -it shellserver2`).

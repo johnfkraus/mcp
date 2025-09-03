@@ -11,6 +11,13 @@
               "--transport",
               "stdio"
             ]
+          },
+          "shell": {
+              "command": "/Users/blauerbock/.local/bin/uv",
+              "args": ["--directory", "/Users/blauerbock/workspaces/mcp/shellserver2", "run", "server.py"]
+            }
+
           }
         }
-      }
+      
+
