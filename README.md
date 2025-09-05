@@ -628,3 +628,9 @@ GCP research prompt
   }
 }
 ```
+
+## 44. Intro to Resources
+
+MCP Resources Spec:
+
+https://modelcontextprotocol.io/specification/2025-06-18/server/resources

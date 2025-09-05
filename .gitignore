@@ -1,6 +1,10 @@
+**/*.zip
+.idea
 ClaudeLogs
+claude_desktop_config
+cursor-configuration/
+docker-container-log.txt
+git_commands.txt
 mcp.log
-mcpdoc
-mcpreadme.md
-quickstart-resources-main.zip
-shellserver
+quickstart-resources-main
+
