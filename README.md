@@ -134,8 +134,7 @@ npx @modelcontextprotocol/inspector
 
 Browse to the MCP Inspector, or Click the MCP Inspector shown in the terminal, i.e.,
 
-http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=b8594203fc08f8162603c2986c5c22396dcaf53d03993ce66469cf2b4cb87c60
-
+http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=b8594203fc08f8162603c...
 
 Use transport type SSE.
 
@@ -145,9 +144,7 @@ Replace "uvx" in the claude config with full path to executable:
 
 /Users/blauerbock/.local/bin/uvx
 
-
 ## 5. Building, Securing, and Containerizing an MCP Server
-
 
 ### 22. What are we building?
 
@@ -543,3 +540,91 @@ The result of \( 54 + 2 \times 3 \) is 56.
 
 # Section 7.  Prompts and Resources
 
+## 42. MCP Prompts and Resources at a High Level
+
+![](images/mcp-server-primitives.png)
+
+https://modelcontextprotocol.io/specification/2025-06-18/server/prompts
+
+Example: mcp server of gpt_researcher.
+
+Exposes a prompt template for user to fill in a topic and goal.
+
+https://modelcontextprotocol.io/specification/2025-06-18/server/resources
+
+Resources: like an HTTP get request.
+
+Both resources and prompts can be implemented with MCP tools.  Tools can return lists of prompts or resources. 
+
+Not all clients support all MCP features.
+
+https://modelcontextprotocol.io/clients
+
+## 43. Prompts
+
+https://gofastmcp.com/getting-started/welcome
+
+`uv add fastmcp`
+
+'/Users/blauerbock/Library/Application Support/Claude/claude_desktop_config.json'
+
+Add to claude config.
+
+/Users/blauerbock/workspaces/mcp/mcp-crash-course/main.py
+
+/Users/blauerbock/workspaces/mcp/mcp-crash-course/.venv/bin/python3
+
+
+ [Errno 48] error while attempting to bind on address ('127.0.0.1', 8000): address already in use
+
+Every host has a different implementation of MCP.
+
+sudo npx @modelcontextprotocol/inspector
+
+Copy session token from terminal.
+
+68dea650a5c7d8c89a9abd8137a49...
+
+In MCP inspector gui, paste the token into Proxy Session Token input box.
+
+But not necessary, it is already entered.
+
+Integrate the MCP server into cursor:
+
+Cursor > Settings (wheel) > MCP and Integrations > New MCP server 
+
+```json
+
+{
+  "mcpServers": {
+    "research-prompt": {
+      "url": "http://127.0.0.1:8000/mcp"
+    },
+    "weather": {
+      "command": "node",
+      "args": ["/Users/blauerbock/workspaces/mcp/quickstart-resources-main/weather-server-typescript/build/index.js"]
+    }
+  }
+}
+
+```
+
+GCP research prompt
+
+.cursor/mcp.json
+
+```json
+
+{
+  "mcpServers": {
+    "gptr-mcp": {
+      "command": "python",
+      "args": ["/absolute/path/to/gpt-researcher/gptr-mcp/server.py"],
+      "env": {
+        "OPENAI_API_KEY": "your-openai-key-here",
+        "TAVILY_API_KEY": "your-tavily-key-here"
+      }
+    }
+  }
+}
+```
