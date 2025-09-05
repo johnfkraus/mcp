@@ -1,0 +1,3 @@
+git clone -b project/langchain-mcp-adapters https://github.com/emarco177/mcp-crash-course.git
+cd langchain-mcp-adapters
+git checkout f3567e5babb9bc91e8406d41ee82f2331f5641fe

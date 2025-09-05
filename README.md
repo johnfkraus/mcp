@@ -356,3 +356,190 @@ Write "Hello MCP" in ASCII art and then echo it via terminal.
 
 See the ascii art in the container log.
 
+
+# Section 6: Connecting LLM Clients: Tool Calling Mechanisms and MCP
+
+
+
+https://github.com/langchain-ai/langchain-mcp-adapters
+
+
+## 33. How LLMs Really Use Tools: Understanding Tool Calling
+
+![](images/llms-are-single-token-generators.png)
+
+LLMs are single token generators.
+
+Tool use/calling is an ad hoc, add-on behavior added to the application layer that are running the LLM.
+
+ChatGPT has the LLM wrapped inside an application.  Software engineers wrote those apps.
+
+Tools like web searching are external code not part of the LLM. 
+
+very special system prompts.
+
+get_weather(city=New York)
+
+MCP lets us write tools that support function calling.
+
+
+## 34.  Bridging the Gap: The LangChain MCP Adapter Explained
+
+We are injecting into the LLMs prompt information on the tools.  
+
+The LangChain MCP Adapters library provides a lightweight wrapper that makes Anthropic Model Context Protocol (MCP) tools compatible with LangChain and LangGraph.
+
+https://github.com/langchain-ai/langchain-mcp-adapters
+
+
+## 35. Inside the MCP Protocol: How Components Interact
+
+![](images/mcp-protocol-gist.png)
+
+
+MCPServer is decoupled from the app/client.
+
+The LangChain MCP Adapter library provides tool compatibility, enabling LangChain/LangGraph agents to use tools exposed via the MCP Protocol.  
+
+The adapter acts as a bridge, enabling tool compatibility by wrapping MCP tools so they can be seamlessly integrated and used within existing LangChain and LangGraph applications/agents.
+
+## 36.  Hands On Setting Up our Environment
+
+
+To get the final code, see the 'git_commands.txt' file.
+
+git checkout --orphan project/langchain-mcp-adapters2 
+
+git rm -rf .
+
+Open project in Cursor.
+
+Create virtual env.
+
+uv venv
+
+Activate with: source .venv/bin/activate
+
+Install dependencies (from https://github.com/langchain-ai/langchain-mcp-adapters)
+
+uv add langchain-mcp-adapters langgraph "langchain[openai]"
+
+uv add python-dotenv
+
+uv run main.py
+
+change def main(): to:
+
+async def main():
+
+Change main() to:
+
+asyncio.run(main())
+
+
+Create a '.env' file to hold our environment variables.
+
+## 38. [Hands On] Setting Up Our Environment- Cheat Sheet
+
+Quick Project Setup: Copy-Paste These Commands for lazy folks like me ;)
+
+git checkout --orphan project/langchain-mcp-adapters
+
+git rm -rf .
+
+uv init
+
+uv venv
+
+source .venv/bin/activate
+
+uv add langchain-mcp-adapters langgraph langchain-openai
+
+uv add python-dotenv
+
+git add .
+
+(Commit command via Cursor AI - not explicitly listed)
+
+(Push command - not explicitly listed, but implied after setting upstream)
+
+Alternative commands to clone the resulting state:
+
+git clone -b project/langchain-mcp-adapters https://github.com/emarco177/mcp-crash-course.git
+cd langchain-mcp-adapters
+git checkout f3567e5babb9bc91e8406d41ee82f2331f5641fe
+
+
+## 38. Hands On MCP SSE
+
+In mcp-crash-course, branch = langchain-mcp-adapters, create 
+
+`server/__init_).py`
+`server/math_server.py`
+
+Run:
+
+`uv run servers/math_server.py`
+
+![](images/mcp-transport-layer.png)
+
+Create `servers/weather_server.py`.
+
+Get code from here: https://github.com/langchain-ai/langchain-mcp-adapters
+
+## 39. Imports (Hands on)
+
+Update main.py
+
+```python
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+from langchain_openai import ChatOpenAI
+from langchain_mcp_adapters import load_mcp_tools
+from langgraph.prebuilt import create_react_agent
+
+
+```
+
+Sort dependencies:
+
+`uv add isort`
+
+`isort .`
+
+Add: `llm = ChatOpenAI()`
+
+Use absolute path to server file.
+
+## 41. Under the Hood of MCP with LangSmith Tracing
+
+![](images/protocol-gist2.png)
+
+LangGraph agent with the help of the MCP client is making a request of the MCP server.  The actual execution of the tool is in the MCP server.  Decoupled.
+
+smith.langchain.com
+
+pip install -U langchain langchain-openai
+
+LANGSMITH_TRACING="true"
+LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+LANGSMITH_API_KEY="<your-api-key>"
+LANGSMITH_PROJECT="pr-crushing-mass-40"
+OPENAI_API_KEY="<your-openai-api-key>"
+
+
+rocessing request of type ListToolsRequest
+Processing request of type CallToolRequest
+Processing request of type CallToolRequest
+The result of \(54 + 2\) is 56, and the result of \(2 \times 3\) is 6.
+(mcp-crash-course) (base) blauerbock@Mac /Users/blauerbock/workspaces/mcp/project/mcp-crash-course [langchain-mcp-adapters]
+% uv run main.py
+Session initialized
+Processing request of type ListToolsRequest
+Processing request of type CallToolRequest
+Processing request of type CallToolRequest
+The result of \( 54 + 2 \times 3 \) is 56.
+
+# Section 7.  Prompts and Resources
+
