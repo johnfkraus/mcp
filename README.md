@@ -634,3 +634,38 @@ GCP research prompt
 MCP Resources Spec:
 
 https://modelcontextprotocol.io/specification/2025-06-18/server/resources
+
+## 45. Resources Theory
+
+https://modelcontextprotocol.io/specification/2025-06-18/server/resources
+
+Resources allow servers to share data that provides context to language models, such as files, database schemas, or application-specific information. 
+
+Tools are executable; resources are not executable.
+
+Resource = context data.
+
+Tool = action.
+
+Each resource is uniquely identified by a URI, a uniform resource identifier.
+
+## 46. Pokemon Resources Implementation
+
+Now using the project/resource branch of the mcp-crash-course repo.
+
+Code: https://github.com/emarco177/mcp-crash-course/tree/project/resources
+
+```shell
+source .venv/bin/activate
+
+sudo lsof -i :8000
+
+kill PID
+
+python main.py
+```
+
+Now we integrate the MCP server into Claude.
+
+## 47. MCP Resources in Claude Desktop & Cursor
+
